@@ -128,4 +128,51 @@ def answer_four():
 
     return (linreg.score(X_test_poly,y_test), linlasso.score(X_test_poly,y_test))
 
-answer_four()
+
+
+#### ============================================================
+####                       
+#### ============================================================
+
+
+import pandas as pd
+import numpy as np
+from sklearn.model_selection import train_test_split
+from pathlib import Path
+import os
+
+filepath_data = os.path.join(Path('__File__').parent, 'data', 'mushrooms.csv')
+
+mush_df = pd.read_csv(filepath_data)
+mush_df2 = pd.get_dummies(mush_df)
+
+X_mush = mush_df2.iloc[:,2:]
+y_mush = mush_df2.iloc[:,1]
+
+# use the variables X_train2, y_train2 for Question 5
+X_train2, X_test2, y_train2, y_test2 = train_test_split(X_mush, y_mush, random_state=0)
+
+# For performance reasons in Questions 6 and 7, we will create a smaller version of the
+# entire mushroom dataset for use in those questions.  For simplicity we'll just re-use
+# the 25% test split created above as the representative subset.
+#
+# Use the variables X_subset, y_subset for Questions 6 and 7.
+X_subset = X_test2
+y_subset = y_test2
+
+
+#### ============================================================
+####                        Question 5
+#### ============================================================
+
+def answer_five():
+
+    from sklearn.tree import DecisionTreeClassifier 
+    clf = DecisionTreeClassifier(random_state=0).fit(X_train2,y_train2) 
+    df = pd.DataFrame({'feature':X_train2.columns.values, 'feature importance': clf.feature_importances_})
+    df.sort_values(by='feature importance', ascending=False, inplace=True)
+
+    return df['feature'].tolist()[:5]
+
+
+print(answer_five())
