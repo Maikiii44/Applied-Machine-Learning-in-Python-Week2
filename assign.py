@@ -49,4 +49,26 @@ def answer_one():
 
     return degree_predictions
 
-print(answer_one())
+def answer_two():
+    from sklearn.linear_model import LinearRegression
+    from sklearn.preprocessing import PolynomialFeatures
+    from sklearn.metrics import r2_score
+
+    r2_train = np.array([])
+    r2_test = np.array([])
+
+    # Range of degrees
+    degrees = range(10)
+    
+    for i in degrees :
+
+        poly = PolynomialFeatures(i)
+        X_train    = poly.fit_transform(X_train[None].T)
+        X_test     = poly.fit_transform(X_test[None].T)
+
+        linreg = LinearRegression().fit(X_train, y_train)
+
+        r2_train.append(r2_train, linreg.score(X_train, y_train))
+        r2_test.append(r2_test, linreg.score(X_test, y_test))
+    
+    return (r2_train, r2_test)
