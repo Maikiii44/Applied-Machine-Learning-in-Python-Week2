@@ -83,7 +83,7 @@ def answer_two():
     
     return (r2_train, r2_test)
 
-print(answer_two())
+# print(answer_two())
 
 #### ============================================================
 ####                        Question 3
@@ -103,4 +103,29 @@ def answer_three():
 
     return (0,9,6)
 
-answer_three()
+# answer_three()
+
+#### ============================================================
+####                        Question 4
+#### ============================================================
+
+def answer_four():
+
+    from sklearn.preprocessing import PolynomialFeatures 
+    from sklearn.linear_model import Lasso, LinearRegression 
+    from sklearn.metrics import r2_score
+
+    degree = 12
+
+    poly=PolynomialFeatures (degree) 
+    X_train_poly = poly.fit_transform(X_train[None].T) 
+    X_test_poly = poly.fit_transform(X_test[None].T)
+
+    linreg = LinearRegression().fit(X_train_poly,y_train) 
+    linlasso = Lasso(alpha=0.01, max_iter=18808).fit(X_train_poly,y_train)
+
+    #Asked to find score for TEST SET!
+
+    return (linreg.score(X_test_poly,y_test), linlasso.score(X_test_poly,y_test))
+
+answer_four()
