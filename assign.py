@@ -174,5 +174,18 @@ def answer_five():
 
     return df['feature'].tolist()[:5]
 
+#### ============================================================
+####                        Question 6
+#### ============================================================
 
-print(answer_five())
+def answer_six():
+
+    from sklearn.svm import SVC 
+    from sklearn.model_selection import validation_curve
+
+    # RBF kernel and C-1 are default anyway.
+    param_range = np.logspace(-4,1,6) 
+    train_scores, test_scores = validation_curve(SVC(random_state=0),X_subset,y_subset, param_name='gamma', param_range=param_range)   
+
+    # Finds row-wise mean (i.e mean across column values).
+    return (np.array(list(map(np.mean,train_scores))),np.array(list(map(np.mean,test_scores))))
