@@ -1,6 +1,7 @@
 import numpy as np
 import pandas as pd
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 
 np.random.seed(0)
@@ -20,6 +21,11 @@ X_train, X_test, y_train, y_test = train_test_split(x, y, random_state=0)
 #     plt.scatter(X_train, y_train, label='training data')
 #     plt.scatter(X_test, y_test, label='test data')
 #     plt.legend(loc=4);
+
+#### ============================================================
+####                        Question 1
+#### ============================================================
+
 
 def answer_one():
     from sklearn.linear_model import LinearRegression 
@@ -49,6 +55,10 @@ def answer_one():
 
     return degree_predictions
 
+#### ============================================================
+####                        Question 2
+#### ============================================================
+
 def answer_two():
     from sklearn.linear_model import LinearRegression
     from sklearn.preprocessing import PolynomialFeatures
@@ -63,12 +73,34 @@ def answer_two():
     for i in degrees :
 
         poly = PolynomialFeatures(i)
-        X_train    = poly.fit_transform(X_train[None].T)
-        X_test     = poly.fit_transform(X_test[None].T)
+        X_train_poly    = poly.fit_transform(X_train[None].T)
+        X_test_poly     = poly.fit_transform(X_test[None].T)
 
-        linreg = LinearRegression().fit(X_train, y_train)
+        linreg = LinearRegression().fit(X_train_poly, y_train)
 
-        r2_train.append(r2_train, linreg.score(X_train, y_train))
-        r2_test.append(r2_test, linreg.score(X_test, y_test))
+        r2_train    = np.append(r2_train, linreg.score(X_train_poly, y_train))
+        r2_test     = np.append(r2_test, linreg.score(X_test_poly, y_test))
     
     return (r2_train, r2_test)
+
+print(answer_two())
+
+#### ============================================================
+####                        Question 3
+#### ============================================================
+
+def answer_three():
+
+    r2 = answer_two()
+
+    plt.figure(figsize=(10,5))
+    plt.plot(range(10), r2[0], 'r', label='training data') 
+    plt.plot(range(10), r2[1], 'b', label='test data') 
+    plt.xlabel('Order') 
+    plt.ylabel('Score') 
+    plt.legend()
+    plt.show()
+
+    return (0,9,6)
+
+answer_three()
